@@ -9,7 +9,7 @@ public class UE5_1DemoEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-
+		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_1;
 		ExtraModuleNames.AddRange( new string[] { "UE5_1Demo" } );
 	}
 }
