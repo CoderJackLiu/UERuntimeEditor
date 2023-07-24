@@ -4,6 +4,8 @@
 #include "Components/RE_ElementComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Interfaces/BP_InteractiveInterface.h"
+#include "Kismet/GameplayStatics.h"
+#include "Managers/RE_ControllerManager.h"
 
 
 // Sets default values for this component's properties
@@ -195,9 +197,14 @@ APlayerController* URE_ElementComponent::GetPlayerController()
 {
 	if (!PlayerController)
 	{
-		if (APlayerController* Controller = GetWorld()->GetFirstPlayerController())
+		const int32 PlayerIndex = URE_ControllerManager::Get()->GetControllerIndex();
+		if (PlayerIndex == 0)
 		{
-			PlayerController = Controller;
+			PlayerController = GetWorld()->GetFirstPlayerController();
+		}
+		else
+		{
+			PlayerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), PlayerIndex);
 		}
 	}
 	return PlayerController;

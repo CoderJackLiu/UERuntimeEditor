@@ -6,7 +6,9 @@
 #include "Components/RE_InteractiveComponent.h"
 #include "Interfaces/BP_InteractiveInterface.h"
 #include "Interfaces/RE_InteractiveInterface.h"
+#include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Managers/RE_ControllerManager.h"
 #include "SceneActors/RE_InteractiveActor.h"
 
 
@@ -83,7 +85,7 @@ void URE_InteractiveControlComponent::LineTraceDetect(FHitResult& OutHitResult, 
 	if (GetPlayerController()->DeprojectMousePositionToWorld(WorldLocation, WorldDirection))
 	{
 		FVector StartLocation = WorldLocation;
-		FVector EndLocation = WorldLocation + WorldDirection * 10000.f;
+		FVector EndLocation   = WorldLocation + WorldDirection * 10000.f;
 		const TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes{UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldDynamic)};
 		const TArray<AActor*> ActorsToIgnore{GetOwner()};
 		FHitResult HitResult;
@@ -184,7 +186,6 @@ void URE_InteractiveControlComponent::ReleaseClick()
 
 void URE_InteractiveControlComponent::Select(AActor* InActor) const
 {
-	
 }
 
 void URE_InteractiveControlComponent::Deselect()
@@ -216,7 +217,15 @@ APlayerController* URE_InteractiveControlComponent::GetPlayerController()
 {
 	if (PlayerController == nullptr)
 	{
-		PlayerController = GetWorld()->GetFirstPlayerController();
+		int32 PlayerIndex = URE_ControllerManager::Get()->GetControllerIndex();
+		if (PlayerIndex == 0)
+		{
+			PlayerController = GetWorld()->GetFirstPlayerController();
+		}
+		else
+		{
+			PlayerController = UGameplayStatics::GetPlayerControllerFromID(GetWorld(), PlayerIndex);
+		}
 	}
 	return PlayerController;
 }

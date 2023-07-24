@@ -43,7 +43,10 @@ protected:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual bool DoesSupportWorldType(const EWorldType::Type WorldType) const override;
 
+	//
+	virtual void Deinitialize() override ;
 
+	
 
 private:
 	//图层管理

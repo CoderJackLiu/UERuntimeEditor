@@ -3,9 +3,18 @@
 
 #include "RuntimeEditorSubsystem.h"
 
+#include "Managers/RE_ControllerManager.h"
+
 bool URuntimeEditorSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
-	return true;
+	//world name
+	FString WorldName = Outer->GetWorld()->GetName();
+	//log world name
+	UE_LOG(LogTemp, Warning, TEXT("WorldName:%s"), *WorldName);
+	const FString TargetWorldName = URE_ControllerManager::Get()->GetSettings()->GetWorldName();
+	//log TargetWorldName
+	UE_LOG(LogTemp, Warning, TEXT("TargetWorldName:%s"), *TargetWorldName);
+	return DoesSupportWorldType(Outer->GetWorld()->WorldType);
 }
 
 void URuntimeEditorSubsystem::PostInitialize()
@@ -28,20 +37,14 @@ bool URuntimeEditorSubsystem::DoesSupportWorldType(const EWorldType::Type WorldT
 	return WorldType == EWorldType::PIE || WorldType == EWorldType::Game;
 }
 
+void URuntimeEditorSubsystem::Deinitialize()
+{
+	URE_ControllerManager::Get()->DestroyInstance();
+	Super::Deinitialize();
+}
+
 AActor* URuntimeEditorSubsystem::SpawnNewInteractiveActor(ERE_ElementType ObjectType, FVector2D Location, FVector2D Size)
 {
-	// switch (ObjectType)
-	// {
-	// case ERE_ElementType::Background:
-	// 	
-	// 	return SpawnNewBackgroundActor(Location, Size);
-	// case ERE_ElementType::Image:
-	// 	return SpawnNewImageActor(Location, Size);
-	// case ERE_ElementType::Character:
-	// 	return SpawnNewCharacterActor(Location, Size);
-	// case ERE_ElementType::Text:
-	// 	return SpawnNewTextActor(Location, Size);
-	// }
 	return nullptr;
 }
 

@@ -24,10 +24,10 @@ enum class ERE_DirectionType : uint8
 
 
 //delegate
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FRE_InteractiveComponentDelegate,FVector,NewLocation,URE_InteractiveComponent*,InteractiveComponent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FRE_InteractiveComponentDelegate, FVector, NewLocation, URE_InteractiveComponent*, InteractiveComponent);
 
-UCLASS(BlueprintType,ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
-class RUNTIMEEDITOR_API URE_InteractiveComponent : public UStaticMeshComponent ,public IRE_InteractiveInterface
+UCLASS(BlueprintType, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class RUNTIMEEDITOR_API URE_InteractiveComponent : public UStaticMeshComponent, public IRE_InteractiveInterface
 {
 	GENERATED_BODY()
 
@@ -66,16 +66,21 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RuntimeEditor|RE_InteractiveComponent")
 	FVector DefaultScale;
 
+
 	//reset to default scale
 	UFUNCTION(BlueprintCallable, Category = "RuntimeEditor|RE_InteractiveComponent")
 	void ResetToDefaultScale();
 
 	//get Interactive direction type
 	EMouseCursor::Type GetInteractiveDirectionType() const;
-	
+
 	// Interactive direction type
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RuntimeEditor|RE_InteractiveComponent")
 	ERE_DirectionType InteractiveDirectionType;
 
-	
+private:
+	UPROPERTY()
+	APlayerController* PlayerController;
+
+	APlayerController* GetPlayerController();
 };

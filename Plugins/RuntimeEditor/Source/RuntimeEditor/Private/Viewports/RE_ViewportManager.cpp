@@ -1,28 +1,39 @@
-﻿$COPYRIGHT_LINE$
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-$MY_HEADER_INCLUDE_DIRECTIVE$
+#include "Viewports/RE_ViewportManager.h"
+
+#include "Camera/CameraActor.h"
+#include "Camera/CameraComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
-$PREFIX$$UNPREFIXED_CLASS_NAME$::$PREFIX$$UNPREFIXED_CLASS_NAME$()
+ARE_ViewportManager::ARE_ViewportManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
-void $PREFIX$$UNPREFIXED_CLASS_NAME$::BeginPlay()
+void ARE_ViewportManager::BeginPlay()
 {
 	Super::BeginPlay();
-	$END$
 }
 
 // Called every frame
-void $PREFIX$$UNPREFIXED_CLASS_NAME$::Tick(float DeltaTime)
+void ARE_ViewportManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
+void ARE_ViewportManager::InitViewports()
+{
+	FSplitscreenData ScreenData;
+	ScreenData.PlayerData.Add(FPerPlayerSplitscreenData(0.f, 0.f, 0.0f, 0.0f));
+	ScreenData.PlayerData.Add(SplitScreenData.ConvertToPerPlayerSplitScreenData());
+	UGameViewportClient* Viewport   = GetWorld()->GetGameViewport();
+	Viewport->MaxSplitscreenPlayers = 2;
+	Viewport->SetForceDisableSplitscreen(true);
+	Viewport->SplitscreenInfo[ESplitScreenType::None] = ScreenData;
+}

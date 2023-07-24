@@ -25,7 +25,7 @@ public class RuntimeEditor : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"Core", "Engine",
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -49,5 +49,9 @@ public class RuntimeEditor : ModuleRules
 				// ... add any modules that your module loads dynamically here ...
 			}
 			);
+		if (Target.bBuildEditor)
+		{
+			PrivateDependencyModuleNames.Add("Settings");
+		}
 	}
 }
