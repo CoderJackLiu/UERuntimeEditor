@@ -8,13 +8,13 @@
 bool URuntimeEditorSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	//world name
-	FString WorldName = Outer->GetWorld()->GetName();
+	FString InWorldName = Outer->GetWorld()->GetName();
 	//log world name
-	UE_LOG(LogTemp, Warning, TEXT("WorldName:%s"), *WorldName);
+	UE_LOG(LogTemp, Warning, TEXT("WorldName:%s"), *InWorldName);
 	const FString TargetWorldName = URE_ControllerManager::Get()->GetSettings()->GetWorldName();
 	//log TargetWorldName
 	UE_LOG(LogTemp, Warning, TEXT("TargetWorldName:%s"), *TargetWorldName);
-	return DoesSupportWorldType(Outer->GetWorld()->WorldType);
+	return DoesSupportWorldType(Outer->GetWorld()->WorldType)&&(TargetWorldName==InWorldName);
 }
 
 void URuntimeEditorSubsystem::PostInitialize()
